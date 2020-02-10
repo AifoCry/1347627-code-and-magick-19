@@ -28,16 +28,16 @@
     for (var i = 0; i < 4; i++) {
       wizards[i] =
         {
-          name: WIZARD_NAMES[randomVar(8)] + ' ' + WIZARD_SURNAMES[randomVar(8)],
-          coatColor: WIZARD_COAT[randomVar(6)],
-          eyesColor: WIZARD_EYES[randomVar(5)]
+          name: WIZARD_NAMES[randomVar(WIZARD_NAMES.length)] + ' ' + WIZARD_SURNAMES[randomVar(WIZARD_SURNAMES.length)],
+          coatColor: WIZARD_COAT[randomVar(WIZARD_COAT.length)],
+          eyesColor: WIZARD_EYES[randomVar(WIZARD_EYES.length)]
         };
     }
     return wizards;
   }
 
   // создание DOM-элемента на основе JS-объекта
-  function renderWizard(wizard) {
+  function generateWizard(wizard) {
     var wizardElement = similarWizardTemplate.cloneNode(true);
     wizardElement.querySelector('.setup-similar-label').textContent = wizard.name; // имя персонажа name запишите как текст в блок .setup-similar-label;
     wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor; // цвет мантии coatColor задайте как цвет заливки fill в стилях элемента .wizard-coat;
@@ -49,12 +49,14 @@
   function addWizards(wizards) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < wizards.length; i++) {
-      fragment.appendChild(renderWizard(wizards[i]));
+      var generatedWizard = generateWizard(wizards[i]);
+      fragment.appendChild(generatedWizard);
     }
     similarListElement.appendChild(fragment);
   }
 
-  addWizards(createWizardsObject());
+  var wizardsObject = createWizardsObject();
+  addWizards(wizardsObject);
   userDialog.querySelector('.setup-similar').classList.remove('hidden'); // Показываем копии.
 
 })();
