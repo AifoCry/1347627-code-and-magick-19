@@ -4,12 +4,6 @@
 (function () {
   var ESC_KEY = 'Escape';
   var ENTER_KEY = 'Enter';
-  var WIZARD_NAMES = ['Иван', 'Хуан Себастьян', 'Мария', 'Кристоф', 'Виктор', 'Юлия', 'Люпита', 'Вашингтон'];
-  var WIZARD_SURNAMES = ['да Марья', 'Верон', 'Мирабелла', 'Вальц', 'Онопко', 'Топольницкая', 'Нионго', 'Ирвинг'];
-  var WIZARD_COAT = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
-  var WIZARD_EYES = ['black', 'red', 'blue', 'yellow', 'green'];
-  var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
-
   // настройки
 
   var userDialog = document.querySelector('.setup');
@@ -26,10 +20,8 @@
   var setupPlayer = document.querySelector('.setup-player');
 
 
-  var similarListElement = document.querySelector('.setup-similar-list');
-  var similarWizardTemplate = document.querySelector('#similar-wizard-template').content.querySelector('.setup-similar-item');
-
   // Хендлеры эскейп
+
   var onPopupEscPress = function (evt) {
     if (evt.key === ESC_KEY) {
       closePopup();
@@ -107,72 +99,23 @@
     setupFireball.removeEventListener('click', onWizardFireball);
   };
 
-  // функция генерации случайных данных
-  function randomVar(n) {
-    return Math.floor(Math.random() * n);
-  }
-
-  // генерация случайного элемента из массива
-  var getRandomElement = function (elements) {
-    return elements[randomVar(elements.length)];
-  };
-
-  // Генерим рандомные обьекты и заполняем массив wizards
-  function createWizardsObject() {
-    var wizards = [];
-
-    for (var i = 0; i < 4; i++) {
-      wizards[i] =
-      {
-        name: WIZARD_NAMES[randomVar(WIZARD_NAMES.length)] + ' ' + WIZARD_SURNAMES[randomVar(WIZARD_SURNAMES.length)],
-        coatColor: WIZARD_COAT[randomVar(WIZARD_COAT.length)],
-        eyesColor: WIZARD_EYES[randomVar(WIZARD_EYES.length)]
-      };
-    }
-    return wizards;
-  }
-
 
   var onWizardCoat = function () {
-    var coatColor = getRandomElement(WIZARD_COAT);
+    var coatColor = window.util.getRandomElement(window.similarWizards.WIZARD_COAT);
     setupWizardCoat.style.fill = coatColor;
     setupPlayer.querySelector('input[name="coat-color"]').value = coatColor;
   };
 
   var onWizardEyes = function () {
-    var eyesColor = getRandomElement(WIZARD_EYES);
+    var eyesColor = window.util.getRandomElement(window.similarWizards.WIZARD_EYES);
     setupWizardEyes.style.fill = eyesColor;
     setupPlayer.querySelector('input[name="eyes-color"]').value = eyesColor;
   };
 
   var onWizardFireball = function () {
-    var fireColor = getRandomElement(FIREBALL_COLORS);
+    var fireColor = window.util.getRandomElement(window.similarWizards.FIREBALL_COLORS);
     setupFireball.style = 'background: ' + fireColor + ';';
     setupFireball.querySelector('input').value = fireColor;
   };
-
-
-  // создание DOM-элемента на основе JS-объекта
-  function generateWizard(wizard) {
-    var wizardElement = similarWizardTemplate.cloneNode(true);
-    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name; // имя персонажа name запишите как текст в блок .setup-similar-label;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor; // цвет мантии coatColor задайте как цвет заливки fill в стилях элемента .wizard-coat;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor; // цвет глаз eyesColor задайте как цвет заливки fill в стилях элемента .wizard-eyes.
-    return wizardElement;
-  }
-
-  // заполнения блока DOM-элементами
-  function addWizards(wizards) {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < wizards.length; i++) {
-      var generatedWizard = generateWizard(wizards[i]);
-      fragment.appendChild(generatedWizard);
-    }
-    similarListElement.appendChild(fragment);
-  }
-
-  var wizardsObject = createWizardsObject();
-  addWizards(wizardsObject);
-  userDialog.querySelector('.setup-similar').classList.remove('hidden'); // Показываем копии.
 
 })();

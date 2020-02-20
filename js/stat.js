@@ -21,27 +21,6 @@
   };
 
 
-  var getMaxElement = function (arr) {
-    var MaxElement = arr[0];
-
-    for (var i = 0; i < arr.length; i++) {
-      if (MaxElement < arr[i]) {
-        MaxElement = arr[i];
-      }
-    }
-
-    return MaxElement;
-  };
-
-  var getRandomInt = function (min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  var getColor = function () {
-    var hslColors = 'hsl(240, ' + getRandomInt(0, 100) + '%, 50%)'; // Hue(240° синий), Saturation(random), Lightness(default)
-    return hslColors;
-  };
-
   window.renderStatistics = function (ctx, players, times) {
 
     renderCloud(ctx, CLOUD_X + GAP, CLOUD_Y + GAP, 'rgba(0, 0, 0, 0.7)'); // тень
@@ -52,7 +31,7 @@
     ctx.fillText('Ура вы победили!', CLOUD_X + GAP_TEXT, CLOUD_Y + GAP + GAP_TEXT); // fillText(text, x, y )
     ctx.fillText('Список результатов:', CLOUD_X + GAP_TEXT, CLOUD_Y + GAP + GAP_TEXT + GAP_TEXT);
 
-    var MAX = getMaxElement(times); // Макс
+    var MAX = window.util.getMaxElement(times); // Макс
 
     for (var i = 0; i < players.length; i++) {
       ctx.fillStyle = '#000000';
@@ -61,7 +40,7 @@
       if (players[i] === 'Вы') {
         ctx.fillStyle = BAR_MY_COLOR;
       } else {
-        ctx.fillStyle = getColor();
+        ctx.fillStyle = window.util.getColor();
       }
       ctx.fillRect(BAR_X + BAR_BEETWEEN * i, BAR_Y - (GAP_TEXT + BAR_HEIGHT * times[i] / MAX), BAR_WIDTH, BAR_HEIGHT * times[i] / MAX);
     }
