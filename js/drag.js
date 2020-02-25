@@ -3,6 +3,8 @@
 
   var setupDialogElement = document.querySelector('.setup');
   var dialogHandler = setupDialogElement.querySelector('.upload');
+  var openButton = document.querySelector('.setup-open');
+  var closeButton = setupDialogElement.querySelector('.setup-close');
 
   dialogHandler.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -39,6 +41,7 @@
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
 
+
       if (dragged) {
         var onClickPreventDefault = function (clickEvt) {
           clickEvt.preventDefault();
@@ -53,5 +56,10 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
+  var resetDialogPosition = function () {
+    setupDialogElement.style = '';
+  };
 
+  openButton.addEventListener('click', resetDialogPosition);
+  closeButton.addEventListener('click', resetDialogPosition);
 })();
