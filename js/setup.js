@@ -4,12 +4,16 @@
 (function () {
   var ESC_KEY = 'Escape';
   var ENTER_KEY = 'Enter';
+  var WIZARD_COAT = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
+  var WIZARD_EYES = ['black', 'red', 'blue', 'yellow', 'green'];
+  var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
   // настройки
 
   var userDialog = document.querySelector('.setup');
   // userDialog.classList.remove('hidden'); // Открываем диалог.
   var setupOpen = document.querySelector('.setup-open');
   var setupClose = userDialog.querySelector('.setup-close'); // Крестик
+  var form = userDialog.querySelector('.setup-wizard-form');
 
   // настройки мага
 
@@ -101,21 +105,38 @@
 
 
   var onWizardCoat = function () {
-    var coatColor = window.util.getRandomElement(window.similarWizards.WIZARD_COAT);
+    var coatColor = window.util.getRandomElement(WIZARD_COAT);
     setupWizardCoat.style.fill = coatColor;
     setupPlayer.querySelector('input[name="coat-color"]').value = coatColor;
   };
 
   var onWizardEyes = function () {
-    var eyesColor = window.util.getRandomElement(window.similarWizards.WIZARD_EYES);
+    var eyesColor = window.util.getRandomElement(WIZARD_EYES);
     setupWizardEyes.style.fill = eyesColor;
     setupPlayer.querySelector('input[name="eyes-color"]').value = eyesColor;
   };
 
   var onWizardFireball = function () {
-    var fireColor = window.util.getRandomElement(window.similarWizards.FIREBALL_COLORS);
+    var fireColor = window.util.getRandomElement(FIREBALL_COLORS);
     setupFireball.style = 'background: ' + fireColor + ';';
     setupFireball.querySelector('input').value = fireColor;
+  };
+
+  // отправка данных
+  var getPostForm = function () {
+    userDialog.classList.add('hidden');
+  };
+
+  // отправка данных
+  form.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(form), getPostForm, window.backend.onError);
+    evt.preventDefault();
+  });
+
+  window.setup = {
+    WIZARD_COAT: WIZARD_COAT,
+    WIZARD_EYES: WIZARD_EYES,
+    FIREBALL_COLORS: FIREBALL_COLORS,
   };
 
 })();
