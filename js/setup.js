@@ -7,6 +7,10 @@
   var WIZARD_COAT = ['rgb(101, 137, 164)', 'rgb(241, 43, 107)', 'rgb(146, 100, 161)', 'rgb(56, 159, 117)', 'rgb(215, 210, 55)', 'rgb(0, 0, 0)'];
   var WIZARD_EYES = ['black', 'red', 'blue', 'yellow', 'green'];
   var FIREBALL_COLORS = ['#ee4830', '#30a8ee', '#5ce6c0', '#e848d5', '#e6e848'];
+  var wizard = {
+    onEyesChange: function () {},
+    onCoatChange: function () {}
+  };
   // настройки
 
   var userDialog = document.querySelector('.setup');
@@ -108,12 +112,14 @@
     var coatColor = window.util.getRandomElement(WIZARD_COAT);
     setupWizardCoat.style.fill = coatColor;
     setupPlayer.querySelector('input[name="coat-color"]').value = coatColor;
+    wizard.onCoatChange(coatColor);
   };
 
   var onWizardEyes = function () {
     var eyesColor = window.util.getRandomElement(WIZARD_EYES);
     setupWizardEyes.style.fill = eyesColor;
     setupPlayer.querySelector('input[name="eyes-color"]').value = eyesColor;
+    wizard.onEyesChange(eyesColor);
   };
 
   var onWizardFireball = function () {
@@ -132,6 +138,8 @@
     window.backend.save(new FormData(form), getPostForm, window.backend.onError);
     evt.preventDefault();
   });
+
+  window.wizard = wizard;
 
   window.setup = {
     WIZARD_COAT: WIZARD_COAT,
